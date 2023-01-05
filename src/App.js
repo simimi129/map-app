@@ -7,6 +7,7 @@ import Map from "./components/map/Map";
 
 function App() {
   const [places, setPlaces] = useState([]);
+  const [filteredPlaces, setFilteredPlaces] = useState([]);
   const [coordinates, setCoordinates] = useState({});
   const [bounds, setBounds] = useState({});
   const [childClicked, setChildClicked] = useState(null);
@@ -23,9 +24,16 @@ function App() {
   }, []);
 
   useEffect(() => {
+    const filteredPlaces = places.filter((place) => place.rating > rating);
+
+    setFilteredPlaces(filteredPlaces);
+  }, [rating]);
+
+  useEffect(() => {
     setIsLoading(true);
     getPlacesData(type, bounds?.sw, bounds?.ne).then((data) => {
       setPlaces(data);
+      setFilteredPlaces([]);
       setIsLoading(false);
     });
   }, [type, coordinates, bounds]);
@@ -35,7 +43,7 @@ function App() {
       <Header />
       <div className={classes.body}>
         <List
-          places={places}
+          places={filteredPlaces.length ? filteredPlaces : places}
           childClicked={childClicked}
           isLoading={isLoading}
           type={type}
@@ -45,7 +53,7 @@ function App() {
         />
         <Map
           coordinates={coordinates}
-          places={places}
+          places={filteredPlaces.length ? filteredPlaces : places}
           setCoordinates={setCoordinates}
           setBounds={setBounds}
           setChildClicked={setChildClicked}
