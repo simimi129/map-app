@@ -2,9 +2,15 @@ import classes from "./List.module.css";
 import { useState, useEffect, createRef } from "react";
 import PlaceDetails from "../place-details/PlaceDetails";
 
-function List({ places, childClicked, isLoading }) {
-  const [type, setType] = useState("restaurants");
-  const [rating, setRating] = useState(0);
+function List({
+  places,
+  childClicked,
+  isLoading,
+  type,
+  setType,
+  rating,
+  setRating,
+}) {
   const [elRefs, setElRefs] = useState([]);
 
   useEffect(() => {
